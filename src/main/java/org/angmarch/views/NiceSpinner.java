@@ -70,8 +70,7 @@ public class NiceSpinner extends AppCompatTextView {
     private int dropDownListPaddingBottom;
     private @DrawableRes int arrowDrawableResId;
     private SpinnerTextFormatter spinnerTextFormatter = new SimpleSpinnerTextFormatter();
-    private int backgroundColorID=R.color.white;;
-
+    private int backgroundColorID= R.color.white;
     public NiceSpinner(Context context) {
         super(context);
         init(context, null);
@@ -129,7 +128,6 @@ public class NiceSpinner extends AppCompatTextView {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        this.context=context;
         Resources resources = getResources();
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NiceSpinner);
         int defaultPadding = resources.getDimensionPixelSize(R.dimen.one_and_a_half_grid_unit);
