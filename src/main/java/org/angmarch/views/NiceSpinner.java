@@ -312,7 +312,7 @@ public class NiceSpinner extends AppCompatTextView {
     public <T> void attachDataSource(List<T> list,@ColorRes int backgroundColorID) {
         this.backgroundColorID=backgroundColorID;
 
-        DrawableCompat.setTint(getBackground(),ContextCompat.getColor(context,backgroundColorID));
+        DrawableCompat.setTint(getBackground(),ContextCompat.getColor(getContext(),backgroundColorID));
         adapter = new NiceSpinnerAdapter<>(getContext(), list, textColor, backgroundSelector,backgroundColorID,
                 spinnerTextFormatter);
         setAdapterInternal(adapter);
