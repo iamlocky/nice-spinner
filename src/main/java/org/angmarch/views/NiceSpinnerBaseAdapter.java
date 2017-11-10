@@ -1,9 +1,12 @@
 package org.angmarch.views;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -28,17 +31,19 @@ import android.widget.TextView;
 public abstract class NiceSpinnerBaseAdapter<T> extends BaseAdapter {
 
     private final SpinnerTextFormatter spinnerTextFormatter;
+    private final int backgroundColor;
 
     private int textColor;
     private int backgroundSelector;
 
     int selectedIndex;
 
-    NiceSpinnerBaseAdapter(Context context, int textColor, int backgroundSelector,
+    NiceSpinnerBaseAdapter(Context context, int textColor, int backgroundSelector,@ColorRes int backgroundColor,
                            SpinnerTextFormatter spinnerTextFormatter) {
         this.spinnerTextFormatter = spinnerTextFormatter;
         this.backgroundSelector = backgroundSelector;
         this.textColor = textColor;
+        this.backgroundColor=backgroundColor;
     }
 
     @Override public View getView(int position, @Nullable View convertView, ViewGroup parent) {
@@ -49,8 +54,12 @@ public abstract class NiceSpinnerBaseAdapter<T> extends BaseAdapter {
             convertView = View.inflate(context, R.layout.spinner_list_item, null);
             textView = (TextView) convertView.findViewById(R.id.text_view_spinner);
 
+            Drawable background=ContextCompat.getDrawable(context, backgroundSelector);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                textView.setBackground(ContextCompat.getDrawable(context, backgroundSelector));
+                DrawableCompat.setTint(background,ContextCompat.getColor(context,backgroundColor));
+                textView.setBackground(background);
+            }else {
+                textView.setBackgroundColor(ContextCompat.getColor(context,backgroundColor));
             }
             convertView.setTag(new ViewHolder(textView));
         } else {
@@ -80,8 +89,8 @@ public abstract class NiceSpinnerBaseAdapter<T> extends BaseAdapter {
 
     @Override public abstract int getCount();
 
-    static class ViewHolder {
-        TextView textView;
+    public static class ViewHolder {
+        public TextView textView;
 
         ViewHolder(TextView textView) {
             this.textView = textView;

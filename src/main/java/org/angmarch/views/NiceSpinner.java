@@ -62,6 +62,7 @@ public class NiceSpinner extends AppCompatTextView {
     private AdapterView.OnItemSelectedListener onItemSelectedListener;
     private boolean isArrowHidden;
     private int textColor;
+    private Context context;
     private int backgroundSelector;
     private int arrowDrawableTint;
     private int displayHeight;
@@ -69,6 +70,7 @@ public class NiceSpinner extends AppCompatTextView {
     private int dropDownListPaddingBottom;
     private @DrawableRes int arrowDrawableResId;
     private SpinnerTextFormatter spinnerTextFormatter = new SimpleSpinnerTextFormatter();
+    private int backgroundColorID=R.color.white;;
 
     public NiceSpinner(Context context) {
         super(context);
@@ -127,6 +129,7 @@ public class NiceSpinner extends AppCompatTextView {
     }
 
     private void init(Context context, AttributeSet attrs) {
+        this.context=context;
         Resources resources = getResources();
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NiceSpinner);
         int defaultPadding = resources.getDimensionPixelSize(R.dimen.one_and_a_half_grid_unit);
@@ -137,7 +140,13 @@ public class NiceSpinner extends AppCompatTextView {
         setClickable(true);
 
         backgroundSelector = typedArray.getResourceId(R.styleable.NiceSpinner_backgroundSelector, R.drawable.selector);
-        setBackgroundResource(backgroundSelector);
+        Drawable backgroundSelectorD=ContextCompat.getDrawable(context,backgroundSelector);
+        DrawableCompat.setTint(backgroundSelectorD,ContextCompat.getColor(context,backgroundColorID));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            setBackground(backgroundSelectorD);
+        }else {
+            setBackgroundResource(backgroundSelector);
+        }
         textColor = typedArray.getColor(R.styleable.NiceSpinner_textTint, getDefaultTextColor(context));
         setTextColor(textColor);
 
@@ -297,13 +306,22 @@ public class NiceSpinner extends AppCompatTextView {
     }
 
     public <T> void attachDataSource(List<T> list) {
-        adapter = new NiceSpinnerAdapter<>(getContext(), list, textColor, backgroundSelector,
+        adapter = new NiceSpinnerAdapter<>(getContext(), list, textColor, backgroundSelector,backgroundColorID,
+                spinnerTextFormatter);
+        setAdapterInternal(adapter);
+    }
+
+    public <T> void attachDataSource(List<T> list,@ColorRes int backgroundColorID) {
+        this.backgroundColorID=backgroundColorID;
+
+        DrawableCompat.setTint(getBackground(),ContextCompat.getColor(context,backgroundColorID));
+        adapter = new NiceSpinnerAdapter<>(getContext(), list, textColor, backgroundSelector,backgroundColorID,
                 spinnerTextFormatter);
         setAdapterInternal(adapter);
     }
 
     public void setAdapter(ListAdapter adapter) {
-        this.adapter = new NiceSpinnerAdapterWrapper(getContext(), adapter, textColor, backgroundSelector,
+        this.adapter = new NiceSpinnerAdapterWrapper(getContext(), adapter, textColor, backgroundSelector,backgroundColorID,
                 spinnerTextFormatter);
         setAdapterInternal(this.adapter);
     }

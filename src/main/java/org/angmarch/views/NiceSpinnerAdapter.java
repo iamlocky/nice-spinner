@@ -23,9 +23,9 @@ public class NiceSpinnerAdapter<T> extends NiceSpinnerBaseAdapter {
 
     private final List<T> items;
 
-    NiceSpinnerAdapter(Context context, List<T> items, int textColor, int backgroundSelector,
+    NiceSpinnerAdapter(Context context, List<T> items, int textColor, int backgroundSelector,int backgroundColorID,
                        SpinnerTextFormatter spinnerTextFormatter) {
-        super(context, textColor, backgroundSelector, spinnerTextFormatter);
+        super(context, textColor, backgroundSelector,backgroundColorID,spinnerTextFormatter);
         this.items = items;
     }
 

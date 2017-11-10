@@ -22,9 +22,9 @@ public class NiceSpinnerAdapterWrapper extends NiceSpinnerBaseAdapter {
 
     private final ListAdapter baseAdapter;
 
-    NiceSpinnerAdapterWrapper(Context context, ListAdapter toWrap, int textColor, int backgroundSelector,
+    NiceSpinnerAdapterWrapper(Context context, ListAdapter toWrap, int textColor, int backgroundSelector,int backgroundColorID,
                               SpinnerTextFormatter spinnerTextFormatter) {
-        super(context, textColor, backgroundSelector, spinnerTextFormatter);
+        super(context, textColor, backgroundSelector,backgroundColorID, spinnerTextFormatter);
         baseAdapter = toWrap;
     }
 
